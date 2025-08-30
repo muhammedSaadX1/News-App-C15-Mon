@@ -1,340 +1,153 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:news_app_c15_mon_offline/core/colors_manager.dart';
-import 'package:news_app_c15_mon_offline/features/articles/article_item.dart';
-import 'package:news_app_c15_mon_offline/models/article.dart' show Article;
-import 'package:news_app_c15_mon_offline/models/category_model.dart';
-import 'package:news_app_c15_mon_offline/models/source.dart';
 
-class SourcesView extends StatelessWidget {
+import 'package:news_app_c15_mon_offline/data/api_service/api_service.dart';
+import 'package:news_app_c15_mon_offline/data/datasource_impl/articles_datasource_impl.dart';
+import 'package:news_app_c15_mon_offline/data/datasource_impl/sources_api_datasource_impl.dart';
+import 'package:news_app_c15_mon_offline/data/models/articles_response/Article.dart';
+import 'package:news_app_c15_mon_offline/data/models/sources_response/Source.dart';
+import 'package:news_app_c15_mon_offline/data/repository_impl/articles_repo_impl.dart';
+import 'package:news_app_c15_mon_offline/data/repository_impl/sources_repo_impl.dart';
+import 'package:news_app_c15_mon_offline/features/articles/article_item.dart';
+import 'package:news_app_c15_mon_offline/models/category_model.dart';
+import 'package:news_app_c15_mon_offline/providers/articles_provider.dart';
+import 'package:news_app_c15_mon_offline/providers/sources_provider.dart';
+import 'package:provider/provider.dart';
+
+import '../../core/colors_manager.dart';
+
+class SourcesView extends StatefulWidget {
   SourcesView({super.key, required this.category});
 
   CategoryModel category;
-  List<Source> sources = [
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-    Source(
-      id: "1",
-      name: "BBC",
-      description: "description",
-      url: "url",
-      category: "Category",
-      language: "En",
-      country: "EG",
-    ),
-  ];
-  List<Article> articles = [
-    Article(
-      source: Source(
-        id: "id",
-        name: "name",
-        description: "description",
-        url: "url",
-        category: "category",
-        language: "language",
-        country: "country",
+
+  @override
+  State<SourcesView> createState() => _SourcesViewState();
+}
+
+class _SourcesViewState extends State<SourcesView> {
+  late SourcesProvider sourcesProvider;
+  late ArticlesProvider articlesProvider;
+
+  void fetchData() async {
+    sourcesProvider = SourcesProvider(
+      sourcesRepo: SourcesRepoImpl(
+        sourcesDataSource: SourcesApiDataSourceImpl(apiService: APiService()),
       ),
-      author: "author",
-      title: "title",
-      description: "description",
-      url: "url",
-      urlToImage: "urlToImage",
-      publishedAt: "publishedAt",
-      content: "content",
-    ),
-    Article(
-      source: Source(
-        id: "id",
-        name: "name",
-        description: "description",
-        url: "url",
-        category: "category",
-        language: "language",
-        country: "country",
-      ),
-      author: "author",
-      title: "title",
-      description: "description",
-      url: "url",
-      urlToImage: "urlToImage",
-      publishedAt: "publishedAt",
-      content: "content",
-    ),
-    Article(
-      source: Source(
-        id: "id",
-        name: "name",
-        description: "description",
-        url: "url",
-        category: "category",
-        language: "language",
-        country: "country",
-      ),
-      author: "author",
-      title: "title",
-      description: "description",
-      url: "url",
-      urlToImage: "urlToImage",
-      publishedAt: "publishedAt",
-      content: "content",
-    ),
-    Article(
-      source: Source(
-        id: "id",
-        name: "name",
-        description: "description",
-        url: "url",
-        category: "category",
-        language: "language",
-        country: "country",
-      ),
-      author: "author",
-      title: "title",
-      description: "description",
-      url: "url",
-      urlToImage: "urlToImage",
-      publishedAt: "publishedAt",
-      content: "content",
-    ),
-    Article(
-      source: Source(
-        id: "id",
-        name: "name",
-        description: "description",
-        url: "url",
-        category: "category",
-        language: "language",
-        country: "country",
-      ),
-      author: "author",
-      title: "title",
-      description: "description",
-      url: "url",
-      urlToImage: "urlToImage",
-      publishedAt: "publishedAt",
-      content: "content",
-    ),
-    Article(
-      source: Source(
-        id: "id",
-        name: "name",
-        description: "description",
-        url: "url",
-        category: "category",
-        language: "language",
-        country: "country",
-      ),
-      author: "author",
-      title: "title",
-      description: "description",
-      url: "url",
-      urlToImage: "urlToImage",
-      publishedAt: "publishedAt",
-      content: "content",
-    ),
-  ];
+    );
+    articlesProvider = ArticlesProvider(articlesRepo: ArticlesRepoImpl(articlesDataSource: ArticlesApiDataSourceImpl(apiService: APiService())));
+    await sourcesProvider.fetchSources(widget.category);
+    articlesProvider.fetchArticles(sourcesProvider.sources[0]);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    // return MultiProvider(providers: [
+    //   ChangeNotifierProvider.value(value: sourcesProvider),
+    //   ChangeNotifierProvider.value(value: articlesProvider),
+    // ],
+    //   child: Column(
+    //     children: [
+    //       Consumer<SourcesProvider>(
+    //         builder: (context, sourcesProvider, child) {
+    //           return DefaultTabController(
+    //             length: sourcesProvider.sources.length,
+    //             child: TabBar(
+    //               onTap: (index){
+    //                 articlesProvider.fetchArticles(sourcesProvider.sources[index]);
+    //               },
+    //               tabAlignment: TabAlignment.start,
+    //               isScrollable: true,
+    //               indicatorColor: ColorsManager.white,
+    //               dividerColor: Colors.transparent,
+    //               unselectedLabelStyle: GoogleFonts.inter(
+    //                 color: Colors.white,
+    //                 fontWeight: FontWeight.w500,
+    //                 fontSize: 14,
+    //               ),
+    //               labelStyle: GoogleFonts.inter(
+    //                 color: Colors.white,
+    //                 fontWeight: FontWeight.bold,
+    //                 fontSize: 16,
+    //               ),
+    //               tabs: sourcesProvider.sources
+    //                   .map((source) => Tab(text: source.name))
+    //                   .toList(),
+    //             ),
+    //           );
+    //         },
+    //       ),
+    //       Consumer<ArticlesProvider>(
+    //           builder: (context, articlesProvider, child) {
+    //             return Expanded(child: ListView.builder(
+    //               itemBuilder: (context, index) =>
+    //                   ArticleItem(article: articlesProvider.articles[index]),
+    //               itemCount: articlesProvider.articles.length,),);
+    //           })
+    //     ],
+    //   ),
+    //
+    // );
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: sourcesProvider),
+        ChangeNotifierProvider.value(value: articlesProvider),
+      ],
       child: Column(
         children: [
-          DefaultTabController(
-            length: sources.length,
-            child: TabBar(
-              tabAlignment: TabAlignment.start,
-              isScrollable: true,
-              indicatorColor: ColorsManager.white,
-              dividerColor: Colors.transparent,
-              unselectedLabelStyle: GoogleFonts.inter(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
-              ),
-              labelStyle: GoogleFonts.inter(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-              tabs: sources.map((source) => Tab(text: source.name)).toList(),
-            ),
+          Consumer<SourcesProvider>(
+            builder: (context, sourcesProvider, child) {
+              return sourcesProvider.isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : DefaultTabController(
+                      length: sourcesProvider.sources.length,
+                      child: TabBar(
+                        onTap: (index) {
+                          articlesProvider.fetchArticles(
+                            sourcesProvider.sources[index],
+                          );
+                        },
+                        tabAlignment: TabAlignment.start,
+                        isScrollable: true,
+                        indicatorColor: ColorsManager.white,
+                        dividerColor: Colors.transparent,
+                        unselectedLabelStyle: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                        labelStyle: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        tabs: sourcesProvider.sources
+                            .map((source) => Tab(text: source.name))
+                            .toList(),
+                      ),
+                    );
+            },
           ),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (context, index)=>SizedBox(height: 10.h,),
-              itemBuilder: (context, index)=> ArticleItem(article: articles[index]),
-              itemCount: articles.length,
-            ),
+          Consumer<ArticlesProvider>(
+            builder: (context, articlesProvider, child) {
+              return Expanded(
+                child: articlesProvider.isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        itemBuilder: (context, index) => ArticleItem(
+                          article: articlesProvider.articles[index],
+                        ),
+                        itemCount: articlesProvider.articles.length,
+                      ),
+              );
+            },
           ),
         ],
       ),
